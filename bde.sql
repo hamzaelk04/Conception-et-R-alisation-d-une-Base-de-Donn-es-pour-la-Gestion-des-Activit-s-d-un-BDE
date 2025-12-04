@@ -178,3 +178,18 @@ INSERT INTO sponsoring (id_sponsor, id_event, montant) VALUES
 (10, 18, 3400),
 (15, 19, 2700),
 (18, 20, 7000);
+
+-- Afficher tous les membres du BDE avec leur rôle et leur date d’adhésion.
+SELECT nom, prenom, role, date_adhesion FROM bde
+
+-- Lister tous les événements prévus après une date donnée.
+SELECT * FROM evenements WHERE date_event > '2024-12-18'
+
+-- Afficher les informations des événements ayant un budget supérieur à 5000 MAD.
+SELECT * FROM evenements WHERE budget > 5000
+
+--  Lister les participants inscrits à un événement spécifique.
+SELECT evenements.nom, evenements.description, etudiant.nom, etudiant.prenom FROM evenements 
+INNER JOIN inscription ON inscription.id_event = evenements.id
+INNER JOIN etudiant ON etudiant.id = inscription.id_etudiant
+WHERE evenements.nom = 'Event6'
