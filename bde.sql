@@ -193,3 +193,42 @@ SELECT evenements.nom, evenements.description, etudiant.nom, etudiant.prenom FRO
 INNER JOIN inscription ON inscription.id_event = evenements.id
 INNER JOIN etudiant ON etudiant.id = inscription.id_etudiant
 WHERE evenements.nom = 'Event6'
+
+-- Afficher les sponsors qui ont contribué à des événements ayant un budget supérieur à 3500 MAD.
+SELECT sponsors.*, sponsoring.montant FROM sponsoring
+INNER JOIN sponsors ON sponsoring.id_sponsor = sponsors.id
+WHERE sponsoring.montant >= 5000
+
+-- Calculer la moyenne du budget des événements organisés.
+SELECT SUM(budget) / COUNT(budget) FROM evenements
+
+-- Afficher le nom et la date des événements sponsorisés par un sponsor donné.
+SELECT evenements.nom, evenements.date_event FROM sponsoring
+INNER JOIN sponsors ON sponsoring.id_sponsor = sponsors.id
+INNER JOIN evenements ON sponsoring.id_event = evenements.id
+WHERE sponsors.nom_entreprise = 'entreprise3'
+
+-- Lister les événements qui se déroulent dans un lieu donné.
+SELECT * FROM evenements WHERE lieu = 'lieu3'
+
+-- Afficher les 5 derniers événements organisés par le BDE.
+SELECT * FROM evenements ORDER BY date_event DESC LIMIT 5
+
+-- Lister les membres du BDE qui ont rejoint avant une date donnée.
+SELECT * FROM bde WHERE bde.date_adhesion < '2025-01-10'
+
+-- Compter le nombre total de participants à un événement donné.
+SELECT COUNT(etudiant.id) FROM inscription
+INNER JOIN evenements ON inscription.id_event = evenements.id
+INNER JOIN etudiant ON inscription.id_etudiant = etudiant.id
+WHERE evenements.nom = 'Event7'
+
+-- Afficher les noms des sponsors ayant contribué à plus d’un événement.
+INSERT INTO sponsoring VALUES
+(NULL, 3, 5, 6000)
+
+SELECT sponsors.nom_contact FROM sponsors
+INNER JOIN sponsoring ON sponsors.id = sponsoring.id_sponsor
+INNER JOIN evenements ON sponsoring.id_event = evenements.id
+GROUP BY sponsors.nom_contact
+HAVING COUNT(evenements.id)>1
